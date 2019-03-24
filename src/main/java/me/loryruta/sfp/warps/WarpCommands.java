@@ -105,6 +105,35 @@ public class WarpCommands implements CommandExecutor {
         sender.sendMessage(GREEN + "Warp " + YELLOW + id + GREEN + " deleted.");
     }
 
+    // /warps reload
+    private void onReload(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("warps.reload")) {
+            sender.sendMessage(NO_PERMISSIONS_FOR_COMMAND);
+        }
+        if (args.length != 0) {
+            sender.sendMessage(RED + "Wrong syntax. Expected: /warps reload.");
+            return;
+        }
+        WarpRegistry registry = WarpPlugin.get().getWarpRegistry();
+        registry.unload();
+        registry.load();
+        sender.sendMessage(GREEN + "Warps reloaded from config.");
+    }
+
+    // /warps save
+    private void onSave(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("warps.save")) {
+            sender.sendMessage(NO_PERMISSIONS_FOR_COMMAND);
+        }
+        if (args.length != 0) {
+            sender.sendMessage(RED + "Wrong syntax. Expected: /warps save.");
+            return;
+        }
+        WarpRegistry registry = WarpPlugin.get().getWarpRegistry();
+        registry.save();
+        sender.sendMessage(GREEN + "Warps saved on config.");
+    }
+
     // /warps
     private void onWarps(CommandSender sender, String[] args) {
         if (!sender.hasPermission("warps.list")) {
@@ -173,6 +202,12 @@ public class WarpCommands implements CommandExecutor {
                             break;
                         case "setmessage":
                             onWarpSetMessage(sender, subArgs);
+                            break;
+                        case "reload":
+                            onReload(sender, subArgs);
+                            break;
+                        case "save":
+                            onSave(sender, subArgs);
                             break;
                         default:
                             sender.sendMessage(RED + "No sub-command found for: " + args[0] + ". Try: /warps help"); // TODO config

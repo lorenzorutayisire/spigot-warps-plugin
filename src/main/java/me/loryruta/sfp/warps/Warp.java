@@ -57,7 +57,7 @@ public class Warp {
         data.put("id", id);
 
         Map<String, Object> location = new HashMap<>();
-        location.put("world", this.location.getWorld());
+        location.put("world", this.location.getWorld().getName());
         location.put("x", this.location.getX());
         location.put("y", this.location.getY());
         location.put("z", this.location.getZ());
@@ -77,7 +77,7 @@ public class Warp {
     public static Warp load(Map<String, Object> data) {
         Map<String, Object> location = (Map<String, Object>) data.get("location");
         Warp warp = new Warp((String) data.get("id"), new Location(
-                Bukkit.getWorld((String) data.get("world")),
+                Bukkit.getWorld((String) location.get("world")),
                 ((Number) location.get("x")).doubleValue(),
                 ((Number) location.get("y")).doubleValue(),
                 ((Number) location.get("z")).doubleValue(),

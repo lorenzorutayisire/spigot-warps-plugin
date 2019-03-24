@@ -40,6 +40,8 @@ public class WarpPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        warpRegistry.save();
+        warpRegistry.unload();
     }
 
     public static WarpPlugin get() {

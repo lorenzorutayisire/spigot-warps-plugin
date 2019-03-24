@@ -47,6 +47,10 @@ public class WarpRegistry {
         for (Map<String, Object> warp : (List<Map<String, Object>>) warps.get("warps")) {
             register(Warp.load(warp));
         }
+        try {
+            reader.close();
+        } catch (IOException ignored) {
+        }
     }
 
     public void save() {
@@ -73,7 +77,6 @@ public class WarpRegistry {
     }
 
     public void unload() {
-        save();
         warps.clear();
     }
 }
