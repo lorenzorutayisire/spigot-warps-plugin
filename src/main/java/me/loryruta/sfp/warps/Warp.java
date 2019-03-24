@@ -4,6 +4,7 @@ package me.loryruta.sfp.warps;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -16,8 +17,7 @@ public class Warp {
     private final String id;
 
     @Getter
-    @Setter
-    private Location location;
+    private final Location location;
 
     @Getter
     private final Permission permission;
@@ -27,10 +27,12 @@ public class Warp {
     private Sound sound;
 
     @Getter
+    @Setter
     private List<String> message = new ArrayList<>();
 
     public Warp(String id, Location location) {
         this.id = id;
+        this.location = location;
         this.permission = new Permission("warps.warp." + id);
         this.permission.addParent(Bukkit.getPluginManager().getPermission("warps.warp.*"), true);
     }
@@ -42,7 +44,7 @@ public class Warp {
                 player.playSound(location, sound, 100.0f, 0.0f);
             }
             for (String line : message) {
-                player.sendMessage(line);
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', line));
             }
             return true;
         }

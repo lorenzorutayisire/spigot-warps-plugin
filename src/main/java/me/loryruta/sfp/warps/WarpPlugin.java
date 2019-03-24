@@ -2,11 +2,7 @@ package me.loryruta.sfp.warps;
 
 import lombok.Getter;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import static org.bukkit.ChatColor.RED;
 
 public class WarpPlugin extends JavaPlugin {
     private static WarpPlugin instance;
@@ -26,7 +22,7 @@ public class WarpPlugin extends JavaPlugin {
         NO_PERMISSIONS_FOR_COMMAND = ChatColor.translateAlternateColorCodes('&', getConfig().getString("no-permissions-for-command"));
         NO_PERMISSIONS_FOR_WARP = ChatColor.translateAlternateColorCodes('&', getConfig().getString("no-permissions-for-warp"));
         NO_WARP_FOR_NAME = ChatColor.translateAlternateColorCodes('&', getConfig().getString("no-warp-for-name"));
-        NO_SUB_COMMAND_FOUND = ChatColor.translateAlternateColorCodes('&', getConfig().getString("no-sub-command-found"));
+        NO_SUB_COMMAND_FOUND = ChatColor.translateAlternateColorCodes('&', getConfig().getString("no-sub-command"));
     }
 
     @Override
@@ -37,8 +33,9 @@ public class WarpPlugin extends JavaPlugin {
 
         loadConfig();
 
-        getCommand("warps").setExecutor(this);
-        getCommand("warp").setExecutor(this);
+        WarpCommands commands = new WarpCommands();
+        getCommand("warps").setExecutor(commands);
+        getCommand("warp").setExecutor(commands);
     }
 
     @Override

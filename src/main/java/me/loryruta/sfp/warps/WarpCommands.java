@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import static me.loryruta.sfp.warps.WarpPlugin.NO_PERMISSIONS_FOR_COMMAND;
 import static me.loryruta.sfp.warps.WarpPlugin.NO_PERMISSIONS_FOR_WARP;
@@ -55,6 +56,7 @@ public class WarpCommands implements CommandExecutor {
             sender.sendMessage(RED + "Invalid sound: " + args[1] + ".");
             return;
         }
+        warp.setSound(sound);
         sender.sendMessage(GREEN + "Sound " + YELLOW + sound.name() + GREEN + " attached to " + YELLOW + warp.getId() + GREEN + ".");
     }
 
@@ -64,7 +66,7 @@ public class WarpCommands implements CommandExecutor {
             sender.sendMessage(NO_PERMISSIONS_FOR_COMMAND);
             return;
         }
-        if (args.length != 2) {
+        if (args.length < 2) {
             sender.sendMessage(RED + "Invalid syntax, expected: /warps setmessage <warp> <message>");
             return;
         }
@@ -73,7 +75,13 @@ public class WarpCommands implements CommandExecutor {
             sender.sendMessage(RED + "No warp for: " + args[0] + ".");
             return;
         }
-        warp.getMessage().add(args[1]);
+        StringBuilder message = new StringBuilder();
+        for (int i = 1; i < args.length; i++) {
+            message.append(" ").append(args[i]);
+        }
+        warp.setMessage(Collections.singletonList(
+                message.substring(1, message.length())
+        ));
         sender.sendMessage(GREEN +
                 "Message attached to the warp: " + YELLOW + warp.getId() + GREEN + ". " +
                 "If you'd like to add a longer message, consider editing it in configuration file.");
@@ -85,11 +93,11 @@ public class WarpCommands implements CommandExecutor {
             sender.sendMessage(NO_PERMISSIONS_FOR_COMMAND);
             return;
         }
-        if (args.length != 2) {
+        if (args.length != 1) {
             sender.sendMessage(RED + "Wrong syntax. Expected: /warps delete <warp>.");
             return;
         }
-        String id = args[1];
+        String id = args[0];
         if (WarpPlugin.get().getWarpRegistry().unregister(id) == null) {
             sender.sendMessage(RED + "Warp not found for: " + id + ".");
             return;
@@ -108,20 +116,30 @@ public class WarpCommands implements CommandExecutor {
             return;
         }
         Collection<Warp> warps = WarpPlugin.get().getWarpRegistry().getWarps();
-        sender.sendMessage(GREEN + "There are " + YELLOW + warps.size() + "" + GREEN + ":");
+        if (warps.isEmpty()) {
+            sender.sendMessage(RED + "No warp created yet!");
+        } else if (warps.size() == 1) {
+            sender.sendMessage(GREEN + "There is " + YELLOW + "1 warp" + GREEN + ":");
+        } else {
+            sender.sendMessage(GREEN + "There are " + YELLOW + warps.size() + " warps" + GREEN + ":");
+        }
         for (Warp warp : warps) {
             sender.sendMessage(GREEN + "- " + YELLOW + warp.getId());
         }
     }
 
-    // /warp
+    // /warp <warp>
     private void onWarp(CommandSender sender, String[] args) {
         if (!sender.hasPermission("warps.warp")) {
             sender.sendMessage(NO_PERMISSIONS_FOR_COMMAND);
             return;
         }
-        if (!(sender instanceof Player)){
+        if (!(sender instanceof Player)) {
             sender.sendMessage(RED + "Only players can run this command.");
+            return;
+        }
+        if (args.length != 1) {
+            sender.sendMessage(RED + "Wrong syntax. Expected: /warp <warp>");
             return;
         }
         Warp warp = WarpPlugin.get().getWarpRegistry().getWarp(args[0]);
@@ -144,17 +162,17 @@ public class WarpCommands implements CommandExecutor {
                     switch (args[0]) {
                         case "create":
                         case "add":
-                            onWarpCreate(sender, args);
+                            onWarpCreate(sender, subArgs);
                             break;
                         case "delete":
                         case "remove":
-                            onWarpDelete(sender, args);
+                            onWarpDelete(sender, subArgs);
                             break;
                         case "setsound":
-                            onWarpSetSound(sender, args);
+                            onWarpSetSound(sender, subArgs);
                             break;
                         case "setmessage":
-                            onWarpSetMessage(sender, args);
+                            onWarpSetMessage(sender, subArgs);
                             break;
                         default:
                             sender.sendMessage(RED + "No sub-command found for: " + args[0] + ". Try: /warps help"); // TODO config
@@ -163,6 +181,7 @@ public class WarpCommands implements CommandExecutor {
                 } else {
                     onWarps(sender, args);
                 }
+                break;
             case "warp":
                 onWarp(sender, args);
                 break;
