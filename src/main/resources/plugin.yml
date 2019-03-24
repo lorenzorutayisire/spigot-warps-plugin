@@ -1,0 +1,21 @@
+name: Warps
+version: 1.0
+main: me.loryruta.sfp.warps.WarpPlugin
+author: JohnnyKPL
+
+commands:
+  warps:
+    description: "Main Warps plugin command."
+    aliases: sfpwarps
+    permission: warps
+    usage: "/warps <command>"
+  warp:
+    description: "Teleports you to another location."
+    aliases: w
+    permission: warps.warp
+    usage: "/warp <name>"
+
+permissions:
+  warps.warp.*:
+    description: "Allows to use all created warps."
+    default: true
