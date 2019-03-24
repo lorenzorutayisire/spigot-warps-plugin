@@ -1,5 +1,4 @@
-
-
-no-permissions-for-command: "You don't have enough permissions to run this command."
-no-permissions-for-warp: "You don't have enough permissions to run this command."
-no-warp-for-name: "This name doesn't correspond to any warp."
+no-permissions-for-command: "&cYou don't have enough permissions to run this command."
+no-permissions-for-warp: "&cYou don't have enough permissions to run this command."
+no-warp-for-name: "&cThis name doesn't correspond to any warp."
+no-sub-command: "&cNo sub-command found, try /warps help"
