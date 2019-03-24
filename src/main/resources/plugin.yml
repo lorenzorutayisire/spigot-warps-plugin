@@ -6,16 +6,31 @@ author: JohnnyKPL
 commands:
   warps:
     description: "Main Warps plugin command."
-    aliases: sfpwarps
-    permission: warps
     usage: "/warps <command>"
+    permission: warps.list
   warp:
     description: "Teleports you to another location."
     aliases: w
-    permission: warps.warp
     usage: "/warp <name>"
 
 permissions:
+  warps.warp:
+    description: "Allows to use /warp command."
+    default: true
+
   warps.warp.*:
     description: "Allows to use all created warps."
-    default: true
+    default: op
+
+  warps.*:
+    children:
+      warps.help: true
+      warps.create: true
+      warps.delete: true
+      warps.setsound: true
+      warps.setmessage: true
+      warps.reload: true
+      warps.save: true
+      warps.warp: true
+      warps.warp.*: true
+    default: op

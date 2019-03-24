@@ -15,6 +15,29 @@ import static me.loryruta.sfp.warps.WarpPlugin.NO_WARP_FOR_NAME;
 import static org.bukkit.ChatColor.*;
 
 public class WarpCommands implements CommandExecutor {
+    // /warps help
+    private void onHelp(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("warps.help")) {
+            sender.sendMessage(NO_PERMISSIONS_FOR_COMMAND);
+            return;
+        }
+        if (args.length != 0) {
+            sender.sendMessage(RED + "Invalid syntax, expected: /warps help");
+            return;
+        }
+        sender.sendMessage(GRAY + "All commands featured:");
+        sender.sendMessage(GREEN + "/warps help");
+        sender.sendMessage(GREEN + "/warps");
+        sender.sendMessage(GREEN + "/warps create <warp>");
+        sender.sendMessage(GREEN + "/warps delete <warp>");
+        sender.sendMessage(GREEN + "/warps setsound <warp> <sound>");
+        sender.sendMessage(GREEN + "/warps setmessage <warp> <message>");
+        sender.sendMessage(GREEN + "/warps save");
+        sender.sendMessage(GREEN + "/warps reload");
+        sender.sendMessage(GREEN + "/warp <warp>");
+        sender.sendMessage(GRAY + "For info about commands refer to the online docs.");
+    }
+
     // /warps create <warp>
     private void onWarpCreate(CommandSender sender, String[] args) {
         if (!sender.hasPermission("warps.create")) {
@@ -109,6 +132,7 @@ public class WarpCommands implements CommandExecutor {
     private void onReload(CommandSender sender, String[] args) {
         if (!sender.hasPermission("warps.reload")) {
             sender.sendMessage(NO_PERMISSIONS_FOR_COMMAND);
+            return;
         }
         if (args.length != 0) {
             sender.sendMessage(RED + "Wrong syntax. Expected: /warps reload.");
@@ -124,6 +148,7 @@ public class WarpCommands implements CommandExecutor {
     private void onSave(CommandSender sender, String[] args) {
         if (!sender.hasPermission("warps.save")) {
             sender.sendMessage(NO_PERMISSIONS_FOR_COMMAND);
+            return;
         }
         if (args.length != 0) {
             sender.sendMessage(RED + "Wrong syntax. Expected: /warps save.");
@@ -189,6 +214,9 @@ public class WarpCommands implements CommandExecutor {
                     String[] subArgs = new String[args.length - 1];
                     System.arraycopy(args, 1, subArgs, 0, subArgs.length);
                     switch (args[0]) {
+                        case "help":
+                            onHelp(sender, subArgs);
+                            break;
                         case "create":
                         case "add":
                             onWarpCreate(sender, subArgs);

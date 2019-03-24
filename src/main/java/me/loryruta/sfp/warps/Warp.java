@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 
 import java.util.*;
 
@@ -33,7 +34,8 @@ public class Warp {
     public Warp(String id, Location location) {
         this.id = id;
         this.location = location;
-        this.permission = new Permission("warps.warp." + id);
+
+        this.permission = new Permission("warps.warp." + id, PermissionDefault.TRUE);
         this.permission.addParent(Bukkit.getPluginManager().getPermission("warps.warp.*"), true);
     }
 
